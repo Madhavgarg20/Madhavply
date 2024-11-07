@@ -390,6 +390,10 @@ const App = () => {
               <Phone size={16} />
               <span>+91 9810306789</span>
             </a>
+            <a href="tel:+917042840925" className="flex items-center space-x-2">
+              <Phone size={16} />
+              <span>+91 7042840925</span>
+            </a>
             <a href="mailto:info@madhavply.com" className="flex items-center space-x-2">
               <Mail size={16} />
               <span>info@madhavply.com</span>
@@ -1128,7 +1132,7 @@ const App = () => {
                 <div>
                   <h3 className="text-xl font-bold mb-1 text-gray-800">Call Us</h3>
                   <p className="text-gray-600 hover:text-blue-600 transition-colors duration-300">
-                    +91 9XXXXXXXX
+                    +91 7042840925
                   </p>
                 </div>
               </motion.div>
@@ -1165,7 +1169,7 @@ const App = () => {
                     type="text"
                     required
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 bg-gray-50 hover:bg-gray-100 focus:bg-white"
-                    placeholder="John Doe"
+                    placeholder="Madhav garg"
                   />
                 </div>
                 <div className="space-y-2">
@@ -1174,7 +1178,7 @@ const App = () => {
                     type="email"
                     required
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 bg-gray-50 hover:bg-gray-100 focus:bg-white"
-                    placeholder="john@example.com"
+                    placeholder="info@example.com"
                   />
                 </div>
               </div>
