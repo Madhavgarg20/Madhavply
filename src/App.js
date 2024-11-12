@@ -268,63 +268,112 @@ const App = () => {
   const [productType, setProductType] = useState('standard');
   const [showComparison, setShowComparison] = useState(false);
 
+
   const specs = {
     standard: {
       dimensions: "8' x 4'",
-      thickness: '18mm',
-      weight: '30 KG',
+      thickness: ['6mm  ,  ', '9mm  ,  ', '12mm  ,  ', '18mm'],
+      weight: '37 KG',
     },
     premium: {
       dimensions: "8' x 4'",
-      thickness: '20mm',
-      weight: '32 KG',
+      thickness: ['6mm  ,  ', '9mm  ,  ', '12mm  ,  ', '18mm'],
+      weight: '39 KG',
     },
   };
+  
   const featured = {
-    standard: ['High-grade material composition', 'Water-resistant bonding', 'Superior edge strength'],
-    premium: ['Premium quality material', 'Advanced water resistance', 'Enhanced edge strength'],
+    standard: [
+      'BWR (Boiling Water Resistant) Grade',
+      'Termite Resistant Technology',
+      '100% Borer Free',
+      'ISI 303 Certified',
+      'Matt Ply Process',
+      '4 Time Pressed Technology',
+      '100% Calibrated',
+    ],
+    premium: [
+      'BWP (Boiling Water Proof) Grade',
+      'Termite Proof Technology',
+      '100% Borer Free',
+      'ISI 710 Certified',
+      'Matt Ply Process',
+      '4 Time Pressed Technology',
+      '100% Calibrated',
+      '300% Money Back Guarantee on Termite & Water Error',
+    ],
   };
+  
   const applications = {
-    standard: ['Commercial construction', 'Residential projects', 'Industrial applications'],
-    premium: ['Luxury interiors', 'Custom residential projects', 'Specialized industrial applications'],
+    standard: [
+      'General home interiors',
+      'Living room and bedroom furniture',
+      'Cabinets and storage spaces where water exposure is minimal',
+    ],
+    premium: [
+      'Wet areas like sinks and bathroom cabinets',
+      'Back panels of wardrobes and almirahs due to termite-proof quality',
+      'Any high-moisture areas prone to water exposure',
+    ],
   };
+  
 
   const handleSelectChange = (e) => {
     setProductType(e.target.value);
     setShowComparison(false); // Reset comparison view on product change
   };
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalSrc, setModalSrc] = useState("");
-  
-    const openModal = (src) => {
-      setModalSrc(src);
-      setIsModalOpen(true);
-    };
-  
-    const closeModal = () => {
-      setIsModalOpen(false);
-      setModalSrc("");
-    };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalImage, setModalImage] = useState('');
 
-    const features = [
-      {
-        title: 'Premium Quality',
-        description: 'Highest grade materials and strict quality control',
-      },
-      {
-        title: 'Modern Manufacturing',
-        description: 'State-of-the-art production facilities',
-      },
-      {
-        title: 'Eco-Friendly',
-        description: 'Sustainable practices and materials',
-      },
-      {
-        title: 'Expert Support',
-        description: 'Dedicated technical assistance',
-      },
-    ];
+  const openModal = (imageSrc) => {
+    setModalImage(imageSrc);
+    setIsModalOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalImage('');
+    document.body.style.overflow = 'unset';
+  };
+
+  const certificates = [
+    {
+      title: 'Standard Certificate',
+      imageSrc: "certificates/1.png", // Image for display
+      pdfSrc: 'carouselImages/STANDARD_CERTIFICATE.pdf',   // PDF for download
+    },
+    {
+      title: 'Premium Certificate',
+      imageSrc: 'certificates/3.png',  // Image for display
+      pdfSrc: 'carouselImages/PREMIUM_CERTIFICATE.pdf',    // PDF for download
+    }
+  ];
+
+  const features = [
+    {
+      title: 'Premium Quality Construction',
+      description: 'Built with top-grade materials to ensure durability, strength, and resistance to wear, meeting the highest industry standards.',
+      image: 'https://i.pinimg.com/736x/ca/c0/b2/cac0b2a0f233bc2643b76bf99511e88b.jpg' // Update with the actual image path
+    },
+    {
+      title: 'Advanced Manufacturing Technology',
+      description: 'Produced using state-of-the-art manufacturing facilities, ensuring precision and consistency across all products.',
+      image: 'https://i.pinimg.com/736x/2c/6f/68/2c6f68bf74cbc2acd3ad9b91ab901803.jpg'
+    },
+    {
+      title: 'Eco-Friendly and Sustainable',
+      description: 'Manufactured with environmentally friendly practices, minimizing waste and using sustainable resources for a greener future.',
+      image: 'https://i.pinimg.com/736x/0c/ec/73/0cec73c6b8782f0051a2a7d54dc19ddc.jpg'
+    },
+    {
+      title: 'Reliable Expert Support',
+      description: 'Benefit from our dedicated technical support team, ready to assist with product guidance and technical inquiries.',
+      image: 'https://i.pinimg.com/736x/5e/76/41/5e7641130548fefe973a8c460b347ee0.jpg'
+    },
+  ];
+  
     
       // Container animation for staggered child animation
       const containerVariants = {
@@ -379,156 +428,218 @@ const App = () => {
       setTimeout(() => setIsSubmitted(false), 3000);
     }, 1500);
   };
+  const [isPhoneOpen, setIsPhoneOpen] = useState(false);
+  const [isMailOpen, setIsMailOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-white">
       {/* Top Bar */}
-      <div className="bg-gray-900 text-white py-2">
-        <div className="container mx-auto px-4 flex justify-between items-center">
-          <div className="flex space-x-4">
-            <a href="tel:+919810306789" className="flex items-center space-x-2">
-              <Phone size={16} />
-              <span>+91 9810306789</span>
-            </a>
-            <a href="tel:+917042840925" className="flex items-center space-x-2">
-              <Phone size={16} />
-              <span>+91 7042840925</span>
-            </a>
-            <a href="mailto:info@madhavply.com" className="flex items-center space-x-2">
-              <Mail size={16} />
-              <span>info@madhavply.com</span>
-            </a>
-          </div>
-          <div className="flex items-center space-x-4">
-            <a href="https://www.instagram.com/madhavply/" target="_blank" rel="noopener noreferrer">
-              <Instagram size={20} />
+      <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-gray-100 py-3 shadow-lg">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center">
+          {/* Left Section with Icons */}
+          <div className="flex items-center gap-6">
+            {/* Phone Icon with Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setIsPhoneOpen(!isPhoneOpen)}
+                className="hover:text-blue-400 transition-colors duration-200"
+                onMouseEnter={() => setIsPhoneOpen(true)}
+                onMouseLeave={() => setIsPhoneOpen(false)}
+              >
+                <Phone size={16} className="animate-pulse" />   <span className="text-sm font-medium">Call us</span>    
+              </button>
+              
+              {isPhoneOpen && (
+                <div 
+                  className="absolute left-0 mt-2 py-2 px-4 bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-50 whitespace-nowrap"
+                  onMouseEnter={() => setIsPhoneOpen(true)}
+                  onMouseLeave={() => setIsPhoneOpen(false)}
+                >
+                  <div className="flex flex-col gap-2">
+                    <a 
+                      href="tel:+919810306789"
+                      className="text-sm hover:text-blue-400 transition-colors duration-200 flex items-center gap-2"
+                    >
+                      <Phone size={14} />
+                      +91 9810306789
+                    </a>
+                    <a 
+                      href="tel:+917042840925"
+                      className="text-sm hover:text-blue-400 transition-colors duration-200 flex items-center gap-2"
+                    >
+                      <Phone size={14} />
+                      +91 7042840925
+                    </a>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Email Icon with Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setIsMailOpen(!isMailOpen)}
+                className="hover:text-blue-400 transition-colors duration-200"
+                onMouseEnter={() => setIsMailOpen(true)}
+                onMouseLeave={() => setIsMailOpen(false)}
+              >
+                <Mail size={16} className="animate-pulse" /> <span className="text-sm font-medium">Mail Us</span>   
+              </button>
+              
+              {isMailOpen && (
+                <div 
+                  className="absolute left-0 mt-2 py-2 px-4 bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-50 whitespace-nowrap"
+                  onMouseEnter={() => setIsMailOpen(true)}
+                  onMouseLeave={() => setIsMailOpen(false)}
+                >
+                  <a 
+                    href="mailto:info@madhavply.com"
+                    className="text-sm hover:text-blue-400 transition-colors duration-200 flex items-center gap-2"
+                  >
+                    <Mail size={14} />
+                    info@madhavply.com
+                  </a>
+                </div>
+              )}
+            </div>
+
+            {/* Instagram Icon */}
+            <a 
+              href="https://www.instagram.com/madhavply/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-pink-500 transition-colors duration-200 transform hover:scale-110"
+            >
+              <Instagram size={16} className="animate-pulse" /> <span className="text-sm font-medium">Visit us</span>   
             </a>
           </div>
         </div>
       </div>
-
-      {/* Main Header */}
-      <header className="bg-white shadow-md">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center">
-              <img src="logo.png" alt="Madhavply Logo" className="h-12" />
-            </div>
-
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
-              <a href="#home" className="text-gray-800 hover:text-blue-600">Home</a>
-              <a href="#product" className="text-gray-800 hover:text-blue-600">Products</a>
-              <a href="#about-us" className="text-gray-800 hover:text-blue-600">About Us</a>
-              <a href="#certificates" className="text-gray-800 hover:text-blue-600">Certificates</a>
-              <a href="#3dview" className="text-gray-800 hover:text-blue-600">3-D view</a>
-              <a href="#contact" className="text-gray-800 hover:text-blue-600">Contact</a>
-            </nav>
-
-            {/* Mobile Menu Button */}
-            <button 
-              className="md:hidden"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-
-            <div>
-      <button 
-        className="hidden md:block bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700"
-        onClick={() => setIsBoxOpen(true)}
-      >
-        Request Quote
-      </button>
-
-      <QuoteRequestBox open={isBoxOpen} onClose={() => setIsBoxOpen(false)} />
     </div>
 
-          </div>
-        </div>
+     {/* Main Header */}
+<header className="bg-white shadow-md">
+  <div className="container mx-auto px-4">
+    <div className="flex justify-between items-center py-4">
+      {/* Logo for mobile */}
+      <div className="flex items-center">
+        <img src="logo.png" alt="Madhavply Logo" className="h-8 md:h-12" />
+      </div>
 
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden bg-white border-t">
-            <div className="container mx-auto px-4 py-4">
-              <div className="flex flex-col space-y-4">
-                <a href="#home" className="text-gray-800 hover:text-blue-600">Home</a>
-                <a href="#products" className="text-gray-800 hover:text-blue-600">Products</a>
-                <a href="#about" className="text-gray-800 hover:text-blue-600">About Us</a>
-                <a href="#certificates" className="text-gray-800 hover:text-blue-600">Certificates</a>
-                <a href="#process" className="text-gray-800 hover:text-blue-600">Process</a>
-                <a href="#contact" className="text-gray-800 hover:text-blue-600">Contact</a>
-              </div>
-            </div>
-          </div>
-        )}
-      </header>
+      {/* Desktop Navigation */}
+      <nav className="hidden md:flex items-center space-x-8">
+        <a href="#home" className="text-gray-800 hover:text-blue-600">Home</a>
+        <a href="#product" className="text-gray-800 hover:text-blue-600">Products</a>
+        <a href="#about-us" className="text-gray-800 hover:text-blue-600">About Us</a>
+        <a href="#certificates" className="text-gray-800 hover:text-blue-600">Certificates</a>
+        <a href="#3dview" className="text-gray-800 hover:text-blue-600">3-D view</a>
+        <a href="#contact" className="text-gray-800 hover:text-blue-600">Contact</a>
+      </nav>
 
-      {/* Hero Section */}
-      <section id="home" className="relative min-h-[70%] bg-gray-900 text-white overflow-hidden">
-      {/* Background Carousel */}
-      <div 
-        className="absolute inset-0 w-full h-full"
-        style={{
-          transform: `translateX(-${currentIndex * 100}%)`,
-          transition: 'transform 1s ease-in-out',
-          width: `100%`,
-          display: 'flex'
-        }}
+      
+
+      {/* Mobile Menu Button */}
+      <button 
+        className="md:hidden"
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
       >
-        {images.map((image, index) => (
-          <div 
-            key={index}
-            className="relative w-full h-full flex-shrink-0"
-          >
-            <img
-              src={image}
-              alt={`Slide ${index + 1}`}
-              className="absolute inset-0 w-full h-full object-contain"
-            />
-            <div className="absolute inset-0 bg-black/60"></div>
-          </div>
-        ))}
-      </div>
+        {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
 
-      {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 py-32">
-        <div className="max-w-3xl">
-          <h1 className="text-5xl font-bold mb-6 opacity-100 animate-fadeIn">
-            Crafting Excellence in Plywood & Shuttering
-          </h1>
-          <p className="text-xl mb-8 opacity-100 animate-fadeIn animation-delay-200">
-            Premium quality wood products for construction and interior needs
-          </p>
-          <div className="flex space-x-4 opacity-100 animate-fadeIn animation-delay-400">
-            <button className="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition-colors duration-300">
-              Explore Products
-            </button>
-            
-          </div>
-          <div className="flex space-x-6 mt-12 opacity-100 animate-fadeIn animation-delay-600">
-            <img src="carouselImages/iso.png" alt="ISO Certified" className="h-16" />
-            <img src="carouselImages/quality.png" alt="Quality Certified" className="h-16" />
-            <img src="carouselImages/eco.jpeg" alt="Eco Friendly" className="h-16" />
-          </div>
+      {/* Quote Modal */}
+      <QuoteRequestBox open={isBoxOpen} onClose={() => setIsBoxOpen(false)} />
+    </div>
+  </div>
+
+  {/* Mobile Menu */}
+  {isMenuOpen && (
+    <div className="md:hidden bg-white border-t">
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex flex-col space-y-4">
+          <a href="#home" className="text-gray-800 hover:text-blue-600">Home</a>
+          <a href="#products" className="text-gray-800 hover:text-blue-600">Products</a>
+          <a href="#about" className="text-gray-800 hover:text-blue-600">About Us</a>
+          <a href="#certificates" className="text-gray-800 hover:text-blue-600">Certificates</a>
+          <a href="#process" className="text-gray-800 hover:text-blue-600">Process</a>
+          <a href="#contact" className="text-gray-800 hover:text-blue-600">Contact</a>
         </div>
       </div>
+    </div>
+  )}
+</header>
 
-      {/* Optional: Carousel Indicators */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
-        {images.map((_, index) => (
-          <button
-            key={index}
-            className={`w-2 h-2 rounded-full transition-all duration-300 ${
-              currentIndex === index ? 'bg-white w-4' : 'bg-white/50'
-            }`}
-            onClick={() => setCurrentIndex(index)}
-          />
-        ))}
+{/* Hero Section */}
+<section id="home" className="relative min-h-[70vh] bg-gray-900 text-white overflow-hidden">
+  {/* Background Carousel */}
+  <div 
+    className="absolute inset-0 w-full h-full"
+    style={{
+      transform: `translateX(-${currentIndex * 100}%)`,
+      transition: 'transform 1s ease-in-out',
+      display: 'flex'
+    }}
+  >
+    {images.map((image, index) => (
+      <div 
+        key={index}
+        className="relative w-full h-full flex-shrink-0"
+      >
+        <img
+          src={image}
+          alt={`Slide ${index + 1}`}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/60"></div>
       </div>
-    </section>
+    ))}
+  </div>
 
-    <section id="about-us" className="py-20 bg-gray-100">
+  {/* Content */}
+  <div className="relative z-10 container mx-auto px-4 py-20 md:py-32">
+    <div className="max-w-3xl">
+      <h1 className="text-3xl md:text-5xl font-bold mb-6 opacity-100 animate-fadeIn">
+        Crafting Excellence in Plywood & Shuttering
+      </h1>
+      <p className="text-lg md:text-xl mb-8 opacity-100 animate-fadeIn animation-delay-200">
+        Premium quality wood products for construction and interior needs
+      </p>
+      <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 opacity-100 animate-fadeIn animation-delay-400">
+        <button className="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition-colors duration-300">
+          Explore Products
+        </button>
+        <button 
+          className="bg-green-600 text-white px-8 py-3 rounded-full hover:bg-green-700 transition-colors duration-300"
+          onClick={() => setIsBoxOpen(true)}
+        >
+          Request Quote
+        </button>
+      </div>
+      <div className="flex space-x-4 mt-8 opacity-100 animate-fadeIn animation-delay-600">
+        <img src="carouselImages/iso.png" alt="ISO Certified" className="h-12 sm:h-16" />
+        <img src="carouselImages/quality.png" alt="Quality Certified" className="h-12 sm:h-16" />
+        <img src="carouselImages/eco.jpeg" alt="Eco Friendly" className="h-12 sm:h-16" />
+      </div>
+    </div>
+  </div>
+
+  {/* Carousel Indicators */}
+  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
+    {images.map((_, index) => (
+      <button
+        key={index}
+        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+          currentIndex === index ? 'bg-white w-4' : 'bg-white/50'
+        }`}
+        onClick={() => setCurrentIndex(index)}
+      />
+    ))}
+  </div>
+</section>
+
+
+    {/* About us*/}
+     <section id="about-us" className="py-20 bg-gray-100">
   <div className="container mx-auto px-4 flex flex-col md:flex-row items-start space-y-16 md:space-y-0 md:space-x-16">
     {/* Vision Section */}
     <div className="w-full md:w-1/2 flex flex-col items-start">
@@ -548,10 +659,10 @@ const App = () => {
       <img src="carouselImages/mission (1).jpg" alt="Vision Image" className="w-full h-auto object-cover mt-8" /> {/* Fixed height */}
     </div>
   </div>
-</section>
+     </section>
 
-
-<section className="py-20 bg-gray-100">
+    {/* Experience*/}
+    <section className="py-20 bg-gray-100">
   <div className="container mx-auto px-4 flex flex-col md:flex-row items-start space-y-16 md:space-y-0 md:space-x-16">
     {/* Experience Section */}
     <div className="w-full md:w-1/2 flex flex-col items-start">
@@ -573,105 +684,90 @@ const App = () => {
       </div>
     </div>
   </div>
-</section>
+    </section>
 
 
-{/* Certificates Section */}
-<section id="certificates" className="py-20 bg-gray-50">
-  <div className="container mx-auto px-4 flex flex-col md:flex-row items-start space-y-12 md:space-y-0 md:space-x-12">
-    
-    {/* Certificates Text Section */}
-    <div className="w-full md:w-1/2 flex flex-col items-start">
-      <h2 className="text-4xl md:text-6xl font-bold mb-6 text-gray-800">
-        Our Certificates
-      </h2>
-      <p className="text-lg md:text-2xl text-gray-600 mb-8 leading-relaxed">
-        We are proud to showcase our certifications that reflect our commitment
-        to quality and excellence in the plywood industry.
-      </p>
-    </div>
+     {/* Certificates Section */}
+     <section id="certificates" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-b from-gray-50 to-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+          {/* Text Section */}
+          <div className="w-full lg:w-1/2 flex flex-col justify-center">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-800 mb-6 leading-tight">
+              Our Certificates
+            </h2>
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-600 leading-relaxed max-w-2xl">
+              We are proud to showcase our certifications that reflect our commitment 
+              to quality and excellence in the plywood industry.
+            </p>
+          </div>
 
-    {/* Certificates Display Section */}
-    <div className="flex flex-col md:flex-row w-full md:w-1/2 space-y-6 md:space-y-0 md:space-x-6">
-      
-      {/* Standard Certificate */}
-      <div className="w-full flex flex-col shadow-lg rounded-lg overflow-hidden bg-white">
-        <div className="w-full h-80 md:h-96 overflow-hidden">
-          <iframe
-            src="carouselImages/STANDARD_CERTIFICATE.pdf#toolbar=0&navpanes=0"
-            title="Standard Certificate PDF"
-            className="w-full h-full"
-            frameBorder="0"
-          ></iframe>
-        </div>
-        <div className="flex justify-between px-4 py-4 bg-gray-50">
-          <a
-            href="carouselImages/STANDARD_CERTIFICATE.pdf"
-            download
-            className="bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700 transition duration-300"
-          >
-            Download Standard Certificate
-          </a>
-          <button
-            onClick={() => openModal("carouselImages/STANDARD_CERTIFICATE.pdf")}
-            className="bg-gray-800 text-white text-sm px-4 py-2 rounded hover:bg-gray-900 transition duration-300"
-          >
-            View Fullscreen
-          </button>
-        </div>
-      </div>
-
-      {/* Premium Certificate */}
-      <div className="w-full flex flex-col shadow-lg rounded-lg overflow-hidden bg-white">
-        <div className="w-full h-80 md:h-96 overflow-hidden">
-          <iframe
-            src="carouselImages/PREMIUM_CERTIFICATE.pdf#toolbar=0&navpanes=0"
-            title="Premium Certificate PDF"
-            className="w-full h-full"
-            frameBorder="0"
-          ></iframe>
-        </div>
-        <div className="flex justify-between px-4 py-4 bg-gray-50">
-          <a
-            href="carouselImages/PREMIUM_CERTIFICATE.pdf"
-            download
-            className="bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700 transition duration-300"
-          >
-            Download Premium Certificate
-          </a>
-          <button
-            onClick={() => openModal("carouselImages/PREMIUM_CERTIFICATE.pdf")}
-            className="bg-gray-800 text-white text-sm px-4 py-2 rounded hover:bg-gray-900 transition duration-300"
-          >
-            View Fullscreen
-          </button>
+          {/* Certificates Grid */}
+          <div className="w-full lg:w-1/2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {certificates.map((cert, index) => (
+                <div 
+                  key={index} 
+                  className="group flex flex-col bg-white rounded-2xl shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+                >
+                  <div 
+                    className="relative w-full aspect-[3/4] cursor-pointer overflow-hidden"
+                    onClick={() => openModal(cert.imageSrc)}
+                  >
+                    <img
+                      src={cert.imageSrc}
+                      alt={`${cert.title}`}
+                      className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <span className="text-white text-lg font-medium tracking-wide transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                        Click to view
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div className="p-5 bg-gray-50 flex flex-col sm:flex-row gap-4">
+                    <a
+                      href={cert.pdfSrc}
+                      download
+                      className="flex-1 text-center bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-blue-800 transform hover:scale-[1.02] transition-all duration-300 shadow-md hover:shadow-lg text-sm sm:text-base font-medium"
+                    >
+                      Download {cert.title}
+                    </a>
+                    
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  {/* Modal for Fullscreen View */}
-  {isModalOpen && (
-    <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
-      <div className="relative w-11/12 md:w-4/5 h-4/5">
-        <button
+      {/* Modal */}
+      {isModalOpen && (
+        <div 
+          className="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-opacity duration-300"
           onClick={closeModal}
-          className="absolute top-4 right-4 text-white bg-red-600 hover:bg-red-700 p-2 rounded-full focus:outline-none"
         >
-          ✕
-        </button>
-        <iframe
-          src={`${modalSrc}#toolbar=0&navpanes=0`}
-          title="Certificate Fullscreen View"
-          className="w-full h-full"
-          frameBorder="0"
-        ></iframe>
-      </div>
-    </div>
-  )}
-</section>
-
-
+          <div 
+            className="relative max-w-7xl max-h-[90vh] w-full h-full flex items-center justify-center"
+            onClick={e => e.stopPropagation()}
+          >
+            <button
+              onClick={closeModal}
+              className="absolute -top-2 -right-2 text-white bg-gradient-to-r from-red-600 to-red-700 p-3 rounded-full shadow-lg hover:from-red-700 hover:to-red-800 transform hover:scale-110 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+            >
+              <span className="text-xl leading-none">&times;</span>
+            </button>
+            <img
+              src={modalImage}
+              alt="Certificate Fullscreen View"
+              className="max-w-full max-h-full object-contain rounded-lg shadow-2xl transform transition-transform duration-300"
+            />
+          </div>
+        </div>
+      )}
+    </section>
 
       {/* Featured Products Section */}
       <section id="product" className="py-20 bg-gray-50">
@@ -805,7 +901,7 @@ const App = () => {
       </div>
     </div>
   </div>
-</section>
+      </section>
 
 
        {/* Product Viewer Section */}
@@ -1033,72 +1129,79 @@ const App = () => {
       </div>
     </div>
   </div>
-</section>
-
+       </section>
 
 
       {/* Why Choose Us Section */}
-      <section className="relative bg-gradient-to-b from-gray-50 to-gray-100 py-16 lg:py-24 overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 transform rotate-45 scale-150 bg-gradient-to-r from-blue-500/10 to-blue-300/10"></div>
-        <div className="absolute top-0 left-0 w-32 h-32 md:w-64 md:h-64 bg-blue-400/10 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
-        <div className="absolute bottom-0 right-0 w-32 h-32 md:w-64 md:h-64 bg-blue-300/10 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl"></div>
-      </div>
+<section className="relative bg-gradient-to-b from-gray-50 to-gray-100 py-16 lg:py-24 overflow-hidden">
+  {/* Background decorative elements */}
+  <div className="absolute inset-0">
+    <div className="absolute inset-0 transform rotate-45 scale-150 bg-gradient-to-r from-blue-500/10 to-blue-300/10"></div>
+    <div className="absolute top-0 left-0 w-32 h-32 md:w-64 md:h-64 bg-blue-400/10 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
+    <div className="absolute bottom-0 right-0 w-32 h-32 md:w-64 md:h-64 bg-blue-300/10 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl"></div>
+  </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-12 lg:mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
-            Why Choose Madhavply
-          </h2>
-          <p className="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto">
-            Excellence delivered through quality and commitment
-          </p>
-        </div>
+  <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div className="text-center mb-12 lg:mb-16">
+      <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
+        Why Choose Madhavply
+      </h2>
+      <p className="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto">
+        Excellence delivered through quality and commitment
+      </p>
+    </div>
 
+    <motion.div
+      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+    >
+      {features.map((feature, index) => (
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"
-          initial="hidden"
-          animate="visible"
-          variants={containerVariants}
+          key={index}
+          className="group relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
+          variants={cardVariants}
+          whileHover={{ y: -8, transition: { duration: 0.3 } }}
         >
-          {features.map((feature, index) => (
-            <motion.div
-              key={index}
-              className="group relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
-              variants={cardVariants}
-              whileHover={{ y: -8, transition: { duration: 0.3 } }}
-            >
-              {/* Card gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          {/* Card gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-              {/* Shimmer effect */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent"
-                initial={{ x: '-100%' }}
-                animate={{ x: '100%' }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  repeatType: 'loop',
-                  ease: 'linear',
-                  repeatDelay: 3
-                }}
-              />
+          {/* Shimmer effect */}
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent"
+            initial={{ x: '-100%' }}
+            animate={{ x: '100%' }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              repeatType: 'loop',
+              ease: 'linear',
+              repeatDelay: 3
+            }}
+          />
 
-              <div className="p-6 md:p-8">
-                <h3 className="text-xl md:text-2xl font-bold mb-3 text-gray-800 group-hover:text-blue-600 transition-colors duration-300">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 group-hover:text-gray-700 transition-colors duration-300 text-sm md:text-base">
-                  {feature.description}
-                </p>
-              </div>
-            </motion.div>
-          ))}
+          {/* Image section */}
+          <img
+            src={feature.image} // Assumes each feature object contains an `image` URL.
+            alt={feature.title}
+            className="w-full h-48 object-cover rounded-t-xl sm:h-40 md:h-48 lg:h-56"
+          />
+
+          <div className="p-6 md:p-8">
+            <h3 className="text-xl md:text-2xl font-bold mb-3 text-gray-800 group-hover:text-blue-600 transition-colors duration-300">
+              {feature.title}
+            </h3>
+            <p className="text-gray-600 group-hover:text-gray-700 transition-colors duration-300 text-sm md:text-base">
+              {feature.description}
+            </p>
+          </div>
         </motion.div>
-      </div>
-    </section>
+      ))}
+    </motion.div>
+  </div>
+</section>
+
 
 
       {/* Contact Section */}
@@ -1169,7 +1272,7 @@ const App = () => {
                     type="text"
                     required
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 bg-gray-50 hover:bg-gray-100 focus:bg-white"
-                    placeholder="Madhav garg"
+                    placeholder="John Doe"
                   />
                 </div>
                 <div className="space-y-2">
@@ -1178,7 +1281,7 @@ const App = () => {
                     type="email"
                     required
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 bg-gray-50 hover:bg-gray-100 focus:bg-white"
-                    placeholder="info@example.com"
+                    placeholder="john@example.com"
                   />
                 </div>
               </div>
