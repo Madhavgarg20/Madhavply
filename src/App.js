@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Send , CheckCircle , Phone, Mail, Instagram } from 'lucide-react';
+import { Menu, X, Send , CheckCircle , Phone, Mail, Instagram , MessageCircle} from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Carousel } from 'react-responsive-carousel'; // Named import for Carousel
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // Import carousel styles
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+
 
 const QuoteRequestBox = ({ open, onClose }) => {
   const [contact, setContact] = useState('');
@@ -11,7 +12,9 @@ const QuoteRequestBox = ({ open, onClose }) => {
   const [quality, setQuality] = useState('');
   const [sizeOrType, setSizeOrType] = useState('');
   const [quantity, setQuantity] = useState(1);
-  const [items, setItems] = useState([]); // Store items
+  const [items, setItems] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Options based on category selection
   const qualityOptions = {
@@ -44,10 +47,50 @@ const QuoteRequestBox = ({ open, onClose }) => {
     setItems(items.filter((_, i) => i !== index));
   };
 
-  const handleRequest = () => {
-    alert(`Request Sent: 
-    Contact: ${contact},
-    Items: ${JSON.stringify(items)}`);
+  const handleRequest = async () => {
+    if (!contact || items.length === 0) {
+      alert("Please add your contact number and at least one item");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Format items for WhatsApp message
+      const itemsList = items.map(item => 
+        `- ${item.category}, ${item.quality}, ${item.sizeOrType}, Quantity: ${item.quantity}`
+      ).join('%0a');
+
+      // Create WhatsApp message
+      const text = `New Quote Request%0a%0aContact: ${contact}%0a%0aItems:%0a${itemsList}`;
+      const whatsappNumber = '917042840925'; // Your WhatsApp business number
+      
+      // Open WhatsApp with pre-filled message
+      window.open(`https://wa.me/${whatsappNumber}?text=${text}`, '_blank');
+      
+      // Show success state
+      setIsSubmitted(true);
+      
+      // Reset form
+      setContact('');
+      setCategory('');
+      setQuality('');
+      setSizeOrType('');
+      setQuantity(1);
+      setItems([]);
+      
+      // Close modal after short delay
+      setTimeout(() => {
+        setIsSubmitted(false);
+        onClose();
+      }, 2000);
+
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to send request. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!open) return null;
@@ -55,7 +98,14 @@ const QuoteRequestBox = ({ open, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white w-80 rounded-lg shadow-lg p-5">
-        <h2 className="text-lg font-bold mb-4 text-center">Request a Quote</h2>
+        {isSubmitted ? (
+          <div className="text-center py-8">
+            <h3 className="text-lg font-bold text-green-600 mb-2">Quote Request Sent!</h3>
+            <p className="text-gray-600">We'll get back to you shortly via WhatsApp.</p>
+          </div>
+        ) : (
+          <>
+            <h2 className="text-lg font-bold mb-4 text-center">Request a Quote</h2>
 
         {/* Contact Number */}
         <label className="block text-gray-700 mb-1">Contact Number</label>
@@ -154,19 +204,25 @@ const QuoteRequestBox = ({ open, onClose }) => {
 
         {/* Send Request Button */}
         <button 
-          className="bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700"
-          onClick={handleRequest}
-        >
-          Send Request
-        </button>
+              className={`bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700 ${
+                isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+              onClick={handleRequest}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Sending...' : 'Send Request'}
+            </button>
 
-        {/* Close Button */}
-        <button 
-          className="bg-gray-500 text-white w-full py-2 rounded hover:bg-gray-600 mt-2"
-          onClick={onClose}
-        >
-          Close
-        </button>
+            {/* Close Button */}
+            <button 
+              className="bg-gray-500 text-white w-full py-2 rounded hover:bg-gray-600 mt-2"
+              onClick={onClose}
+              disabled={isSubmitting}
+            >
+              Close
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
@@ -415,21 +471,44 @@ const App = () => {
   }, []);
 
 
+  const [isPhoneOpen, setIsPhoneOpen] = useState(false);
+  const [isMailOpen, setIsMailOpen] = useState(false);
+
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
+
+    // Get form data
+    const formData = new FormData(e.target);
+    const name = formData.get('name');
+    const email = formData.get('email');
+    const phone = formData.get('phone');
+    const message = formData.get('message');
+
+    // Create WhatsApp message
+    const text = `Name: ${name}%0aEmail: ${email}%0aPhone: ${phone}%0aMessage: ${message}`;
+    const whatsappNumber = '917042840925';  // Your number from the contact info
+    
+    try {
+      // Open WhatsApp with pre-filled message
+      window.open(`https://wa.me/${whatsappNumber}?text=${text}`, '_blank');
+      
+      // Show success state
       setIsSubmitted(true);
-      setTimeout(() => setIsSubmitted(false), 3000);
-    }, 1500);
+      // Reset form
+      e.target.reset();
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Failed to send message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
-  const [isPhoneOpen, setIsPhoneOpen] = useState(false);
-  const [isMailOpen, setIsMailOpen] = useState(false);
+
 
   return (
     <div className="min-h-screen bg-white">
@@ -906,100 +985,100 @@ const App = () => {
 
        {/* Product Viewer Section */}
        <section id="3dview" className="py-24 bg-gradient-to-b from-gray-50 to-gray-100">
-  <div className="container mx-auto px-4 max-w-7xl">
-    <div className="text-center mb-20">
-      <h2 className="text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
-        Interactive Product Viewer
-      </h2>
-      <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-        Explore our products in detail with 360° views
-      </p>
-    </div>
-
-    <div className="grid md:grid-cols-2 gap-16">
-      {/* Product 3D Viewer */}
-      <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 backdrop-blur-sm">
-        <div className="flex justify-between mb-6">
-          <select
-            className="border border-gray-200 p-2.5 rounded-lg text-gray-700 font-medium focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
-            value={productType}
-            onChange={handleSelectChange}
-          >
-            <option value="standard">Standard</option>
-            <option value="premium">Premium</option>
-          </select>
-          <button
-            className="px-4 py-2.5 rounded-lg bg-gray-50 hover:bg-gray-100 text-gray-700 font-medium border border-gray-200 transition-all duration-200 hover:shadow-md"
-            onClick={() => setShowComparison(!showComparison)}
-          >
-            Compare
-          </button>
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-20">
+          <h2 className="text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+            Interactive Product Viewer
+          </h2>
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            Explore our products in detail with 360° views
+          </p>
         </div>
 
-        {showComparison ? (
-          <div className="grid grid-cols-2 gap-8">
-            <div className="overflow-hidden w-full h-72 relative rounded-xl shadow-lg">
-              <iframe 
-                src="https://www.pacdora.com/share?filter_url=psnmvjgrw6" 
-                allow="fullscreen; vr; accelerometer; gyroscope"
-                className="absolute top-[-15%] left-[-15%] w-[140%] h-[140%] object-cover rounded-xl"
-              />
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Product 3D Viewer */}
+          <div className="bg-white rounded-2xl shadow-xl p-4 md:p-8 border border-gray-100 backdrop-blur-sm">
+            <div className="flex justify-between mb-4 md:mb-6">
+              <select
+                className="border border-gray-200 p-2 rounded-lg text-gray-700 font-medium focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
+                value={productType}
+                onChange={handleSelectChange}
+              >
+                <option value="standard">Standard</option>
+                <option value="premium">Premium</option>
+              </select>
+              <button
+                className="px-4 py-2 rounded-lg bg-gray-50 hover:bg-gray-100 text-gray-700 font-medium border border-gray-200 transition-all duration-200 hover:shadow-md"
+                onClick={() => setShowComparison(!showComparison)}
+              >
+                Compare
+              </button>
             </div>
-            <div className="overflow-hidden w-full h-72 relative rounded-xl shadow-lg">
-              <iframe 
-                src="https://www.pacdora.com/share?filter_url=ps8awo57g2" 
-                allow="fullscreen; vr; accelerometer; gyroscope"
-                className="absolute top-[-15%] left-[-15%] w-[140%] h-[140%] object-cover rounded-xl"
-              />
+
+            {showComparison ? (
+              <div className="grid grid-cols-2 gap-4">
+                <div className="overflow-hidden w-full h-64 md:h-72 relative rounded-xl shadow-lg">
+                  <iframe 
+                    src="https://www.pacdora.com/share?filter_url=psnmvjgrw6" 
+                    allow="fullscreen; vr; accelerometer; gyroscope"
+                    className="absolute top-[-15%] left-[-15%] w-[140%] h-[140%] md:w-[140%] md:h-[140%] object-cover rounded-xl"
+                  />
+                </div>
+                <div className="overflow-hidden w-full h-64 md:h-72 relative rounded-xl shadow-lg">
+                  <iframe 
+                    src="https://www.pacdora.com/share?filter_url=ps8awo57g2" 
+                    allow="fullscreen; vr; accelerometer; gyroscope"
+                    className="absolute top-[-15%] left-[-15%] w-[140%] h-[140%] md:w-[140%] md:h-[140%] object-cover rounded-xl"
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="overflow-hidden w-full h-64 md:h-80 relative rounded-xl shadow-lg">
+                <iframe 
+                  src={`https://www.pacdora.com/share?filter_url=${productType === 'standard' ? 'psnmvjgrw6' : 'ps8awo57g2'}`} 
+                  allow="fullscreen; vr; accelerometer; gyroscope"
+                  className="absolute top-[-15%] left-[-15%] w-[140%] h-[140%] md:w-[140%] md:h-[140%] object-cover rounded-xl"
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Product Details */}
+          <div className="space-y-4 md:space-y-6">
+            <div className="flex flex-wrap gap-2 md:gap-4">
+              <button
+                className={`px-4 md:px-6 py-2 md:py-3 rounded-xl font-medium transition-all duration-200 ${
+                  activeTabs === 'specifications'
+                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-200'
+                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
+                }`}
+                onClick={() => setActiveTabs('specifications')}
+              >
+                Specifications
+              </button>
+              <button
+                className={`px-4 md:px-6 py-2 md:py-3 rounded-xl font-medium transition-all duration-200 ${
+                  activeTabs === 'featured'
+                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-200'
+                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
+                }`}
+                onClick={() => setActiveTabs('featured')}
+              >
+                Features
+              </button>
+              <button
+                className={`px-4 md:px-6 py-2 md:py-3 rounded-xl font-medium transition-all duration-200 ${
+                  activeTabs === 'applications'
+                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-200'
+                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
+                }`}
+                onClick={() => setActiveTabs('applications')}
+              >
+                Applications
+              </button>
             </div>
-          </div>
-        ) : (
-          <div className="overflow-hidden w-full h-80 relative rounded-xl shadow-lg">
-            <iframe 
-              src={`https://www.pacdora.com/share?filter_url=${productType === 'standard' ? 'psnmvjgrw6' : 'ps8awo57g2'}`} 
-              allow="fullscreen; vr; accelerometer; gyroscope"
-              className="absolute top-[-15%] left-[-15%] w-[140%] h-[140%] object-cover rounded-xl"
-            />
-          </div>
-        )}
-      </div>
 
-      {/* Product Details */}
-      <div className="space-y-6">
-        <div className="flex space-x-4 mb-6">
-          <button
-            className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
-              activeTabs === 'specifications'
-                ? 'bg-blue-600 text-white shadow-lg shadow-blue-200'
-                : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
-            }`}
-            onClick={() => setActiveTabs('specifications')}
-          >
-            Specifications
-          </button>
-          <button
-            className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
-              activeTabs === 'featured'
-                ? 'bg-blue-600 text-white shadow-lg shadow-blue-200'
-                : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
-            }`}
-            onClick={() => setActiveTabs('featured')}
-          >
-            Features
-          </button>
-          <button
-            className={`px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
-              activeTabs === 'applications'
-                ? 'bg-blue-600 text-white shadow-lg shadow-blue-200'
-                : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
-            }`}
-            onClick={() => setActiveTabs('applications')}
-          >
-            Applications
-          </button>
-        </div>
-
-        <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100">
+            <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100">
           {showComparison ? (
             <>
               {activeTabs === 'specifications' && (
@@ -1270,6 +1349,7 @@ const App = () => {
                   <label className="text-sm font-medium text-gray-700">Your Name</label>
                   <input
                     type="text"
+                    name="name"
                     required
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 bg-gray-50 hover:bg-gray-100 focus:bg-white"
                     placeholder="John Doe"
@@ -1279,6 +1359,7 @@ const App = () => {
                   <label className="text-sm font-medium text-gray-700">Email Address</label>
                   <input
                     type="email"
+                    name="email"
                     required
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 bg-gray-50 hover:bg-gray-100 focus:bg-white"
                     placeholder="john@example.com"
@@ -1290,6 +1371,7 @@ const App = () => {
                 <label className="text-sm font-medium text-gray-700">Phone Number</label>
                 <input
                   type="tel"
+                  name="phone"
                   required
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 bg-gray-50 hover:bg-gray-100 focus:bg-white"
                   placeholder="+91 98765 43210"
@@ -1299,6 +1381,7 @@ const App = () => {
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700">Your Message</label>
                 <textarea
+                  name="message"
                   required
                   rows="4"
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 bg-gray-50 hover:bg-gray-100 focus:bg-white resize-none"
@@ -1394,32 +1477,31 @@ const App = () => {
       </footer>
 
       {/* Contact Buttons */}
-<div className="fixed bottom-4 right-4 flex flex-col space-y-4">
-  {/* WhatsApp Button */}
-  <a 
-    href="https://wa.me/9810306789" 
-    target="_blank" 
-    rel="noopener noreferrer" 
-    className="bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600"
-  >
-    {/* WhatsApp Icon */}
-    <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M20.52 3.44A10.02 10.02 0 0 0 12 2C6.48 2 2 6.48 2 12c0 1.85.51 3.65 1.48 5.24L2 22l4.82-1.49A10.02 10.02 0 0 0 12 22c5.52 0 10-4.48 10-10 0-2.66-1.04-5.17-2.95-7.08l-.53-.48zM12 20c-1.68 0-3.27-.52-4.6-1.4l-.36-.25-2.83.87.89-2.83-.25-.36C4.52 15.27 4 13.68 4 12c0-4.42 3.58-8 8-8 2.13 0 4.12.83 5.61 2.33C19.17 7.88 20 9.87 20 12c0 4.42-3.58 8-8 8z" />
-      <path d="M15.07 13.26c-.34-.17-2.02-.98-2.34-1.1-.31-.1-.54-.17-.76.17-.2.34-.88 1.1-1.08 1.32-.2.2-.4.23-.74.06-.34-.17-1.43-.5-2.73-1.6-.6-.53-1-1.17-1.1-1.5-.1-.34.05-.5.22-.67.23-.23.34-.34.5-.57.17-.23.1-.4 0-.57-.1-.17-.76-1.8-1.04-2.44-.26-.63-.53-.54-.76-.55-.2 0-.4-.03-.62-.03-.23 0-.57.08-.86.4-.3.35-1.13 1.1-1.13 2.68s1.15 3.1 1.31 3.32c.17.23 2.27 3.47 5.5 4.63.77.27 1.38.44 1.85.56.78.2 1.5.17 2.07.1.63-.08 2.02-.82 2.3-1.61.27-.78.27-1.47.2-1.6-.1-.17-.33-.27-.67-.44z" />
-    </svg>
-  </a>
-  
-  {/* Phone Call Button */}
-  <a 
-    href="tel:+91 9810306789" 
-    className="bg-blue-500 text-white p-4 rounded-full shadow-lg hover:bg-blue-600"
-  >
-    {/* Phone Icon */}
-    <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M6.62 10.79a15.91 15.91 0 0 0 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.26 1.12.35 2.33.54 3.57.54.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.24.19 2.45.54 3.57.09.35 0 .75-.26 1.02l-2.2 2.2z" />
-    </svg>
-  </a>
-</div>
+      <div className="fixed bottom-4 right-4 flex flex-col space-y-4">
+      {/* WhatsApp Button */}
+      <a
+        href="https://wa.me/7042840925"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-full shadow-lg flex items-center gap-2 transition-all duration-200 group"
+      >
+        <MessageCircle size={20} className="animate-pulse" />
+        <span className="text-sm font-medium opacity-0 max-w-0 group-hover:max-w-[100px] group-hover:opacity-100 transition-all duration-300 whitespace-nowrap overflow-hidden">
+          WhatsApp
+        </span>
+      </a>
+
+      {/* Phone Call Button */}
+      <a
+        href="tel:+91 7042840925"
+        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-3 rounded-full shadow-lg flex items-center gap-2 transition-all duration-200 group"
+      >
+        <Phone size={20} className="animate-pulse" />
+        <span className="text-sm font-medium opacity-0 max-w-0 group-hover:max-w-[100px] group-hover:opacity-100 transition-all duration-300 whitespace-nowrap overflow-hidden">
+          Call us
+        </span>
+      </a>
+    </div>
 
 
     </div>
