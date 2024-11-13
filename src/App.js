@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Send , CheckCircle , Phone, Mail, Instagram , MessageCircle} from 'lucide-react';
+import { Menu, X, Send , CheckCircle , Phone, Mail, Instagram , MessageCircle , MapIcon} from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Carousel } from 'react-responsive-carousel'; // Named import for Carousel
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // Import carousel styles
@@ -236,62 +236,90 @@ const App = () => {
 
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // const [activeTab, setActiveTab] = useState('specifications');
+  const [activeTab, setActiveTab] = useState('specifications');
 
+  
+ 
   const products = [
     {
-      name: 'Plywood',
-      images: ['carouselImages/1.jpeg', 'carouselImages/2.jpeg', 'carouselImages/3.jpeg'],
-      description: 'High-quality plywood available in various sizes: 18mm, 12mm, 9mm, 6mm.',
-      sizes: ['18mm', '12mm', '9mm', '6mm'],
+      name: "Premium Plywood",
+      description: "High-grade plywood with superior strength and durability",
+      image: "https://i.pinimg.com/736x/d5/8e/ac/d58eac2e5dc6b911f7e278796203218b.jpg",
       specifications: [
-        'Water-resistant',
-        'Termite-resistant',
-        'BWP grade available',
-        'Smooth finish'
+        "BWP Grade",
+        "Marine Grade",
+        "Termite Proof",
+        "Waterproof"
       ],
+      sizes: ["8' x 4'", "7' x 4'", "6' x 4'", "8' x 3'", "7' x 3'", "6' x 3'"],
+      thicknesses: ["18mm", "12mm", "9mm", "6mm"],
       applications: [
-        'Furniture',
-        'Interior decoration',
-        'Cabinet making',
-        'Wall paneling'
+        "Furniture",
+        "Interior Design",
+        "Construction",
+        "Marine Applications"
       ]
     },
     {
-      name: 'Blockboard',
-      images: ['carouselImages/4.jpeg', 'carouselImages/5.jpeg', 'carouselImages/6.jpeg'],
-      description: 'Premium Blockboards: Pine Double Core and Popular Board, ideal for versatile applications.',
-      variants: [
-        'Pine Double Core',
-        'Popular Board'
-      ],
+      name: "Blockboard",
+      description: "Engineered wood product with solid core for enhanced stability",
+      image: "https://i.pinimg.com/736x/38/a4/98/38a498f509ab0e533f067a6fe8b3e366.jpg",
       specifications: [
-        'High density core',
-        'Moisture resistant',
-        'Dimensional stability',
-        'Superior bonding'
+        "High Density",
+        "Moisture Resistant",
+        "Dimensionally Stable",
+        "Screw Holding Capacity"
       ],
+      sizes: ["8' x 4'", "7' x 4'", "6' x 4'"],
+      thickness: "19mm",
+      categories: ["Pine Board", "Popular Board"],
       applications: [
-        'Door manufacturing',
-        'Heavy furniture',
-        'Partitions',
-        'Tables'
+        "Doors",
+        "Partitions",
+        "Furniture",
+        "Cabinets"
       ]
     },
     {
-      name: 'Shuttering',
-      images: ['carouselImages/7.jpeg', 'carouselImages/8.jpeg', 'carouselImages/9.jpeg'],
-      description: 'Shuttering solutions available in Red and Black colors, with 30kg and 34kg options.',
-      variants: [
-        'Red Shuttering',
-        'Black Shuttering'
-      ],
-      weights: ['30kg', '34kg'],
+      name: "Shuttering Ply",
+      description: "Heavy-duty plywood designed for concrete formwork",
+      image: "https://5.imimg.com/data5/ZK/CX/GV/SELLER-789327/film-faced-plywood.jpg",
       specifications: [
-        'High reusability',
-        'Film-faced coating',
-        'Impact resistant',
-        'Superior strength'
+        "High Reusability",
+        "Film Faced",
+        "Impact Resistant",
+        "Water Resistant"
+      ],
+      sizes: ["8' x 4'"],
+      variants: [
+        { color: "Red", weights: ["30kg", "34kg"] },
+        { color: "Black", weights: ["30kg", "34kg"] }
+      ],
+      applications: [
+        "Construction",
+        "Concrete Formwork",
+        "Industrial Use"
+      ]
+    },
+    {
+      name: "Flush Doors (Coming Soon)",
+      description: "Premium quality doors with excellent finish and durability",
+      image: "https://i.pinimg.com/736x/ef/66/dd/ef66dd1f196210b2340f5d9d6a825fc3.jpg",
+      specifications: [
+        "Pine Filling",
+        "Popular Frame",
+        "Double Core",
+        "Gurjan Face"
+      ],
+      sizes: [
+        "6' x 2.5'", "6' x 3'", "6' x 3.5'", "6' x 4'",
+        "7' x 2.5'", "7' x 3'", "7' x 3.5'", "7' x 4'"
+      ],
+      applications: [
+        "Residential",
+        "Commercial",
+        "Hotels",
+        "Offices"
       ]
     }
   ];
@@ -590,7 +618,15 @@ const App = () => {
               rel="noopener noreferrer"
               className="hover:text-pink-500 transition-colors duration-200 transform hover:scale-110"
             >
-              <Instagram size={16} className="animate-pulse" /> <span className="text-sm font-medium">Visit us</span>   
+              <Instagram size={16} className="animate-pulse" /> <span className="text-sm font-medium">Follow us</span>   
+            </a>
+            <a 
+              href="https://maps.app.goo.gl/wXg8XnPn8howbmZg6" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-pink-500 transition-colors duration-200 transform hover:scale-110"
+            >
+              <MapIcon size={16} className="animate-pulse" /> <span className="text-sm font-medium">Visit us</span>   
             </a>
           </div>
         </div>
@@ -850,137 +886,156 @@ const App = () => {
 
       {/* Featured Products Section */}
       <section id="product" className="py-20 bg-gray-50">
-  <div className="container mx-auto px-4">
-    <h2 className="text-4xl font-extrabold text-center text-gray-800 mb-12">
-      Premium Wood Products
-    </h2>
-    
-    <div className="relative max-w-5xl mx-auto rounded-lg shadow-lg overflow-hidden bg-white p-8">
-      
-      {/* Product Navigation */}
-      <button
-        onClick={prevProduct}
-        className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-3 rounded-full shadow-lg hover:bg-gray-700 transition-colors duration-200"
-        aria-label="Previous Product"
-      >
-        <ChevronLeft className="w-5 h-5" />
-      </button>
-      
-      <button
-        onClick={nextProduct}
-        className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-3 rounded-full shadow-lg hover:bg-gray-700 transition-colors duration-200"
-        aria-label="Next Product"
-      >
-        <ChevronRight className="w-5 h-5" />
-      </button>
-
-      {/* Product Card */}
-      <div className="p-6 lg:p-10 space-y-6">
-        <div className="text-center">
-          <h3 className="text-3xl font-bold text-gray-800 mb-2">
-            {products[currentProduct].name}
-          </h3>
-          <p className="text-gray-600 leading-relaxed">
-            {products[currentProduct].description}
-          </p>
-        </div>
-
-        {/* Image Carousel */}
-        <div className="relative aspect-video bg-gray-200 rounded-lg overflow-hidden shadow-inner">
-          <img
-            src={products[currentProduct].images[currentImage]}
-            alt={`${products[currentProduct].name} - Image ${currentImage + 1}`}
-            className="object-cover w-full h-full"
-          />
-
-          <button
-            onClick={prevImage}
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-gray-900/60 p-1 rounded-full hover:bg-gray-900/80"
-            aria-label="Previous Image"
-          >
-            <ChevronLeft className="w-4 h-4 text-white" />
-          </button>
-
-          <button
-            onClick={nextImage}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-gray-900/60 p-1 rounded-full hover:bg-gray-900/80"
-            aria-label="Next Image"
-          >
-            <ChevronRight className="w-4 h-4 text-white" />
-          </button>
-
-          {/* Image Indicators */}
-          <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-1">
-            {products[currentProduct].images.map((_, idx) => (
-              <div
-                key={idx}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  currentImage === idx ? 'bg-white' : 'bg-gray-400'
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Product Details */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-          
-          {/* Sizes/Variants */}
-          <div>
-            <h4 className="text-lg font-semibold text-gray-700 mb-3">
-              {products[currentProduct].sizes ? 'Available Sizes' : 'Variants'}
-            </h4>
-            <div className="flex flex-wrap gap-2">
-              {(products[currentProduct].sizes || products[currentProduct].variants || products[currentProduct].weights)?.map((item, idx) => (
-                <span key={idx} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm shadow">
-                  {item}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Specifications */}
-          <div>
-            <h4 className="text-lg font-semibold text-gray-700 mb-3">Specifications</h4>
-            <ul className="list-inside space-y-1">
-              {products[currentProduct].specifications?.map((spec, idx) => (
-                <li key={idx} className="text-gray-600 text-sm">
-                  • {spec}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* Applications */}
-        {products[currentProduct].applications && (
-          <div>
-            <h4 className="text-lg font-semibold text-gray-700 mb-3">Applications</h4>
-            <div className="flex flex-wrap gap-2">
-              {products[currentProduct].applications.map((app, idx) => (
-                <span key={idx} className="px-3 py-1 border border-gray-200 text-gray-600 rounded-full text-sm shadow-sm">
-                  {app}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Product Navigation Indicators */}
-        <div className="flex justify-center space-x-2 pt-6">
-          {products.map((_, idx) => (
+      <div className="container mx-auto px-4">
+        <h2 className="text-4xl font-extrabold text-center text-gray-800 mb-12">
+          Premium Wood Products
+        </h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {products.map((product, index) => (
             <div
-              key={idx}
-              className={`w-3 h-3 rounded-full transition-all ${
-                currentProduct === idx ? 'bg-blue-500' : 'bg-gray-300'
-              }`}
-            />
+              key={index}
+              className="bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-[1.02]"
+            >
+              <div className="aspect-video relative">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <h3 className="absolute bottom-4 left-4 text-2xl font-bold text-white">
+                  {product.name}
+                </h3>
+              </div>
+
+              <div className="p-6">
+                <p className="text-gray-600 mb-6">
+                  {product.description}
+                </p>
+
+                <div className="space-y-6">
+                  {/* Specifications */}
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-800 mb-3">
+                      Specifications
+                    </h4>
+                    <div className="grid grid-cols-2 gap-2">
+                      {product.specifications.map((spec, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-center text-sm text-gray-600"
+                        >
+                          <div className="w-2 h-2 bg-blue-500 rounded-full mr-2" />
+                          {spec}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Sizes */}
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-800 mb-3">
+                      Available Sizes
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {product.sizes.map((size, idx) => (
+                        <span
+                          key={idx}
+                          className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+                        >
+                          {size}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Product-specific details */}
+                  {product.name === "Premium Plywood" && (
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-800 mb-3">
+                        Thickness Options
+                      </h4>
+                      <div className="flex flex-wrap gap-2">
+                        {product.thicknesses.map((thickness, idx) => (
+                          <span
+                            key={idx}
+                            className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+                          >
+                            {thickness}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {product.name === "Blockboard" && (
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-800 mb-3">
+                        Categories
+                      </h4>
+                      <div className="flex flex-wrap gap-2">
+                        {product.categories.map((category, idx) => (
+                          <span
+                            key={idx}
+                            className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+                          >
+                            {category} ({product.thickness})
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {product.name === "Shuttering Ply" && (
+                    <div>
+                      <h4 className="text-lg font-semibold text-gray-800 mb-3">
+                        Available Variants
+                      </h4>
+                      <div className="grid grid-cols-2 gap-4">
+                        {product.variants.map((variant, idx) => (
+                          <div key={idx} className="space-y-2">
+                            <h5 className="font-medium text-gray-700">{variant.color}</h5>
+                            <div className="flex flex-wrap gap-2">
+                              {variant.weights.map((weight, widx) => (
+                                <span
+                                  key={widx}
+                                  className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+                                >
+                                  {weight}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Applications */}
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-800 mb-3">
+                      Applications
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {product.applications.map((app, idx) => (
+                        <span
+                          key={idx}
+                          className="px-3 py-1 border border-gray-200 text-gray-600 rounded-full text-sm"
+                        >
+                          {app}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       </div>
-    </div>
-  </div>
-      </section>
+    </section>
+
 
 
        {/* Product Viewer Section */}
@@ -1421,19 +1476,23 @@ const App = () => {
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white pt-16 pb-8">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8 mb-12">
-            <div>
-              <img src="logo.png" alt="Madhavply Logo" className="h-12 mb-6" />
-              <p className="text-gray-400 mb-6">
-                Leading manufacturer of premium quality plywood and shuttering solutions.
-              </p>
-              <div className="flex space-x-4">
-                <a href="https://www.instagram.com/madhavply/" target="_blank" rel="noopener noreferrer">
-                  <Instagram size={20} className="text-gray-400 hover:text-white" />
-                </a>
-              </div>
+      <div className="container mx-auto px-4">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          {/* Column 1 - Company Info */}
+          <div className="space-y-6">
+            <img src="logo.png" alt="Madhavply Logo" className="h-12" />
+            <p className="text-gray-400">
+              Leading manufacturer of premium quality plywood and shuttering solutions.
+            </p>
+            <div className="flex space-x-4">
+              <a href="https://www.instagram.com/madhavply/" target="_blank" rel="noopener noreferrer">
+                <Instagram size={20} className="text-gray-400 hover:text-white" />
+              </a>
             </div>
+          </div>
+
+          {/* Column 2 - Quick Links & Products */}
+          <div className="grid grid-cols-2 gap-8">
             <div>
               <h3 className="text-lg font-bold mb-6">Quick Links</h3>
               <ul className="space-y-4">
@@ -1452,6 +1511,10 @@ const App = () => {
                 <li><a href="" className="text-gray-400 hover:text-white">FLUSH DOORS</a></li>
               </ul>
             </div>
+          </div>
+
+          {/* Column 3 - Newsletter & Map */}
+          <div className="space-y-6">
             <div>
               <h3 className="text-lg font-bold mb-6">Newsletter</h3>
               <p className="text-gray-400 mb-4">Subscribe to receive updates and special offers</p>
@@ -1469,12 +1532,26 @@ const App = () => {
                 </button>
               </form>
             </div>
-          </div>
-          <div className="border-t border-gray-800 pt-8">
-            <p className="text-center text-gray-400">© 2024 Madhavply. All rights reserved.</p>
+            <div className="w-full h-[300px] mt-6">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3507.888273939826!2d77.53041117554643!3d28.45278417576333!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce958d2000209%3A0x5a12d4c3c650f17f!2sMADHAV%20TIMBER!5e0!3m2!1sen!2sin!4v1731493510079!5m2!1sen!2sin"
+                className="w-full h-full rounded-lg"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
           </div>
         </div>
-      </footer>
+
+        {/* Copyright */}
+        <div className="border-t border-gray-800 pt-8">
+          <p className="text-center text-gray-400">© 2024 Madhavply. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
 
       {/* Contact Buttons */}
       <div className="fixed bottom-4 right-4 flex flex-col space-y-4">
